@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Stopwatch & Study Timer</title>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            transition: background 0.5s, color 0.5s;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .clock, .stopwatch {
+            font-size: 6rem;
+            font-weight: bold;
+            padding: 50px;
+            border: 5px solid cyan;
+            display: none;
+            border-radius: 20px;
+            box-shadow: 0 0 30px cyan, 0 0 60px cyan;
+            width: 90%;
+            margin: auto;
+        }
+        .buttons button, select {
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin: 10px;
+            border-radius: 10px;
+            transition: 0.3s;
+            animation: glow 1s infinite alternate;
+            color: #fff;
+        }
+        select {
+            background: #222;
+            color: #fff;
+            font-size: 1rem;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        @keyframes glow {
+            0% { box-shadow: 0 0 15px #ff00ff; }
+            100% { box-shadow: 0 0 30px #00ffff; }
+        }
+        .buttons button:hover {
+            transform: scale(1.1);
+            filter: brightness(1.3);
+        }
+        .active {
+            display: block !important;
+        }
+        .dark-mode {
+            background-color: #fff;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="clock" id="clock"></div>
+        <div class="stopwatch" id="stopwatch">00:00:00.000</div>
+        
+        <div class="buttons">
+            <button onclick="startStopwatch()">Start</button>
+            <button onclick="pauseStopwatch()">Pause</button>
+            <button onclick="resetStopwatch()">Reset</button>
+            <button onclick="toggleClock()" id="toggleBtn">Switch to Clock</button>
+            <button onclick="toggleFullScreen()">Fullscreen</button>
+            <button onclick="toggleDarkMode()">Dark/Light Mode</button>
+            <button onclick="playPauseMusic()">Play/Pause Music</button>
+            
+            <select id="musicSelect" onchange="changeMusic()">
+               
+                <option value="https://www.bensound.com/bensound-music/bensound-creativeminds.mp3">Creative Minds</option>
+                <option value="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3">Slow Motion</option>
+                <option value="https://www.bensound.com/bensound-music/bensound-relaxing.mp3">Relaxing</option>
+                <option value="https://www.bensound.com/bensound-music/bensound-dreams.mp3">Dreams</option>
+                <option value="https://www.bensound.com/bensound-music/bensound-memories.mp3">Memories</option>
+                <option value="https://www.bensound.com/bensound-music/bensound-tenderness.mp3">Tenderness</option>
+                <option value="https://www.bensound.com/bensound-music/bensound-sweet.mp3">Sweet</option>
+                <option value="https://www.bensound.com/bensound-music/bensound-lounge.mp3">Lounge</option>
+                <option value="https://www.bensound.com/bensound-music/bensound-erf.mp3">Erf</option>
+                <option value="https://www.bensound.com/bensound-music/bensound-ukulele.mp3">Ukulele</option>
+                <option value="https://www.bensound.com/bensound-music/bensound-sunny.mp3">Sunny Day</option>
+<option value="https://www.bensound.com/bensound-music/bensound-ukulele.mp3">Ukulele</option>
+<option value="https://www.bensound.com/bensound-music/bensound-meditation.mp3">Meditation</option>
+<option value="https://www.bensound.com/bensound-music/bensound-relaxing.mp3">Relaxing</option>
+<option value="https://www.bensound.com/bensound-music/bensound-softpiano.mp3">Soft Piano</option>
+<option value="https://www.bensound.com/bensound-music/bensound-healing.mp3">Healing</option>
+<option value="https://www.bensound.com/bensound-music/bensound-nature.mp3">Nature Sounds</option>
+<option value="https://www.bensound.com/bensound-music/bensound-deepbreath.mp3">Deep Breath</option>
+<option value="https://www.bensound.com/bensound-music/bensound-tranquility.mp3">Tranquility</option>
+<option value="https://www.bensound.com/bensound-music/bensound-zen.mp3">Zen</option>
+<option value="https://www.bensound.com/bensound-music/bensound-mindpeace.mp3">Mind Peace</option>
+<option value="https://www.bensound.com/bensound-music/bensound-yoga.mp3">Yoga Flow</option>
+<option value="https://www.bensound.com/bensound-music/bensound-sleep.mp3">Sleep Well</option>
+<option value="https://www.bensound.com/bensound-music/bensound-deepsleep.mp3">Deep Sleep</option>
+<option value="https://www.bensound.com/bensound-music/bensound-oceanwaves.mp3">Ocean Waves</option>
+<option value="https://www.bensound.com/bensound-music/bensound-rainymood.mp3">Rainy Mood</option>
+<option value="https://www.bensound.com/bensound-music/bensound-windchimes.mp3">Wind Chimes</option>
+<option value="https://www.bensound.com/bensound-music/bensound-serenity.mp3">Serenity</option>
+<option value="https://www.bensound.com/bensound-music/bensound-guitarserene.mp3">Guitar Serene</option>
+<option value="https://www.bensound.com/bensound-music/bensound-celestial.mp3">Celestial</option>
+<option value="https://www.bensound.com/bensound-music/bensound-mindful.mp3">Mindful</option>
+<option value="https://www.bensound.com/bensound-music/bensound-dew.mp3">Morning Dew</option>
+<option value="https://www.bensound.com/bensound-music/bensound-spiritual.mp3">Spiritual</option>
+<option value="https://www.bensound.com/bensound-music/bensound-calmriver.mp3">Calm River</option>
+<option value="https://www.bensound.com/bensound-music/bensound-dreamscape.mp3">Dreamscape</option>
+<option value="https://www.bensound.com/bensound-music/bensound-birds.mp3">Birds Chirping</option>
+<option value="https://www.bensound.com/bensound-music/bensound-relaxwaves.mp3">Relaxing Waves</option>
+<option value="https://www.bensound.com/bensound-music/bensound-slowviolin.mp3">Slow Violin</option>
+<option value="https://www.bensound.com/bensound-music/bensound-chillpiano.mp3">Chill Piano</option>
+<option value="https://www.bensound.com/bensound-music/bensound-stressrelief.mp3">Stress Relief</option>
+<option value="https://www.bensound.com/bensound-music/bensound-mindlight.mp3">Mind Light</option>
+<option value="https://www.bensound.com/bensound-music/bensound-positivevibes.mp3">Positive Vibes</option>
+<option value="https://www.bensound.com/bensound-music/bensound-deeprain.mp3">Deep Rain</option>
+<option value="https://www.bensound.com/bensound-music/bensound-peacefulnight.mp3">Peaceful Night</option>
+<option value="https://www.bensound.com/bensound-music/bensound-mountaintop.mp3">Mountain Top</option>
+<option value="https://www.bensound.com/bensound-music/bensound-fluteharmony.mp3">Flute Harmony</option>
+<option value="https://www.bensound.com/bensound-music/bensound-slowharp.mp3">Slow Harp</option>
+<option value="https://www.bensound.com/bensound-music/bensound-angelicvoice.mp3">Angelic Voice</option>
+<option value="https://www.bensound.com/bensound-music/bensound-infinity.mp3">Infinity</option>
+<option value="https://www.bensound.com/bensound-music/bensound-lightness.mp3">Lightness</option>
+<option value="https://www.bensound.com/bensound-music/bensound-smoothvibes.mp3">Smooth Vibes</option>
+<option value="https://www.bensound.com/bensound-music/bensound-flowingenergy.mp3">Flowing Energy</option>
+<option value="https://www.bensound.com/bensound-music/bensound-mountainbreeze.mp3">Mountain Breeze</option>
+<option value="https://www.bensound.com/bensound-music/bensound-whisperingwind.mp3">Whispering Wind</option>
+<option value="https://www.bensound.com/bensound-music/bensound-harmony.mp3">Harmony</option>
+<option value="https://www.bensound.com/bensound-music/bensound-softbeats.mp3">Soft Beats</option>
+<option value="https://www.bensound.com/bensound-music/bensound-innerspace.mp3">Inner Space</option>
+<option value="https://www.bensound.com/bensound-music/bensound-miracle.mp3">Miracle</option>
+<option value="https://www.bensound.com/bensound-music/bensound-illumination.mp3">Illumination</option>
+<option value="https://www.bensound.com/bensound-music/bensound-cosmicenergy.mp3">Cosmic Energy</option>
+<option value="https://www.bensound.com/bensound-music/bensound-wavesofpeace.mp3">Waves of Peace</option>
+<option value="https://www.bensound.com/bensound-music/bensound-echoes.mp3">Echoes</option>
+<option value="https://www.bensound.com/bensound-music/bensound-glimmeringstars.mp3">Glimmering Stars</option>
+<option value="https://www.bensound.com/bensound-music/bensound-bamboozen.mp3">Bamboo Zen</option>
+<option value="https://www.bensound.com/bensound-music/bensound-lotus.mp3">Lotus</option>
+<option value="https://www.bensound.com/bensound-music/bensound-crystalhealing.mp3">Crystal Healing</option>
+<option value="https://www.bensound.com/bensound-music/bensound-forestambience.mp3">Forest Ambience</option>
+<option value="https://www.bensound.com/bensound-music/bensound-moonlightserenade.mp3">Moonlight Serenade</option>
+<option value="https://www.bensound.com/bensound-music/bensound-horizons.mp3">Horizons</option>
+<option value="https://www.bensound.com/bensound-music/bensound-chakrahealing.mp3">Chakra Healing</option>
+<option value="https://www.bensound.com/bensound-music/bensound-radiantenergy.mp3">Radiant Energy</option>
+<option value="https://www.bensound.com/bensound-music/bensound-sunrisemelody.mp3">Sunrise Melody</option>
+
+<option value="https://www.bensound.com/bensound-music/bensound-tenderness.mp3">Tenderness</option>
+<option value="https://www.bensound.com/bensound-music/bensound-happiness.mp3">Happiness</option>
+<option value="https://www.bensound.com/bensound-music/bensound-buddy.mp3">Buddy</option>
+<option value="https://www.bensound.com/bensound-music/bensound-energy.mp3">Energy</option>
+<option value="https://www.bensound.com/bensound-music/bensound-littleidea.mp3">Little Idea</option>
+<option value="https://www.bensound.com/bensound-music/bensound-funnysong.mp3">Funny Song</option>
+<option value="https://www.bensound.com/bensound-music/bensound-jazzyfrenchy.mp3">Jazzy Frenchy</option>
+<option value="https://www.bensound.com/bensound-music/bensound-onceagain.mp3">Once Again</option>
+<option value="https://www.bensound.com/bensound-music/bensound-happyrock.mp3">Happy Rock</option>
+<option value="https://www.bensound.com/bensound-music/bensound-love.mp3">Love</option>
+<option value="https://www.bensound.com/bensound-music/bensound-betterdays.mp3">Better Days</option>
+<option value="https://www.bensound.com/bensound-music/bensound-romantic.mp3">Romantic</option>
+<option value="https://www.bensound.com/bensound-music/bensound-thelounge.mp3">The Lounge</option>
+<option value="https://www.bensound.com/bensound-music/bensound-ukulele.mp3">Ukulele</option>
+<option value="https://www.bensound.com/bensound-music/bensound-dreams.mp3">Dreams</option>
+<option value="https://www.bensound.com/bensound-music/bensound-summer.mp3">Summer</option>
+<option value="https://www.bensound.com/bensound-music/bensound-memories.mp3">Memories</option>
+<option value="https://www.bensound.com/bensound-music/bensound-endlessmotion.mp3">Endless Motion</option>
+<option value="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3">Slow Motion</option>
+<option value="https://www.bensound.com/bensound-music/bensound-epic.mp3">Epic</option>
+<option value="https://www.bensound.com/bensound-music/bensound-retrosoul.mp3">Retro Soul</option>
+<option value="https://www.bensound.com/bensound-music/bensound-tomorrow.mp3">Tomorrow</option>
+<option value="https://www.bensound.com/bensound-music/bensound-sweet.mp3">Sweet</option>
+<option value="https://www.bensound.com/bensound-music/bensound-dubstep.mp3">Dubstep</option>
+<option value="https://www.bensound.com/bensound-music/bensound-actionable.mp3">Actionable</option>
+<option value="https://www.bensound.com/bensound-music/bensound-punky.mp3">Punky</option>
+<option value="https://www.bensound.com/bensound-music/bensound-hey.mp3">Hey</option>
+<option value="https://www.bensound.com/bensound-music/bensound-extremeaction.mp3">Extreme Action</option>
+<option value="https://www.bensound.com/bensound-music/bensound-rumble.mp3">Rumble</option>
+<option value="https://www.bensound.com/bensound-music/bensound-sad.mp3">Sad</option>
+<option value="https://www.bensound.com/bensound-music/bensound-funkyelement.mp3">Funky Element</option>
+<option value="https://www.bensound.com/bensound-music/bensound-evolution.mp3">Evolution</option>
+<option value="https://www.bensound.com/bensound-music/bensound-dance.mp3">Dance</option>
+<option value="https://www.bensound.com/bensound-music/bensound-goinghigher.mp3">Going Higher</option>
+<option value="https://www.bensound.com/bensound-music/bensound-hipjazz.mp3">Hip Jazz</option>
+<option value="https://www.bensound.com/bensound-music/bensound-thejazzpiano.mp3">The Jazz Piano</option>
+<option value="https://www.bensound.com/bensound-music/bensound-moose.mp3">Moose</option>
+<option value="https://www.bensound.com/bensound-music/bensound-dancewithme.mp3">Dance With Me</option>
+<option value="https://www.bensound.com/bensound-music/bensound-latin.mp3">Latin</option>
+<option value="https://www.bensound.com/bensound-music/bensound-dubstep.mp3">Dubstep</option>
+<option value="https://www.bensound.com/bensound-music/bensound-allthat.mp3">All That</option>
+<option value="https://www.bensound.com/bensound-music/bensound-clearday.mp3">Clear Day</option>
+<option value="https://www.bensound.com/bensound-music/bensound-sunny.mp3">Sunny</option>
+<option value="https://www.bensound.com/bensound-music/bensound-warmmemories.mp3">Warm Memories</option>
+<option value="https://www.bensound.com/bensound-music/bensound-psychedelic.mp3">Psychedelic</option>
+<option value="https://www.bensound.com/bensound-music/bensound-groovyhiphop.mp3">Groovy Hip Hop</option>
+<option value="https://www.bensound.com/bensound-music/bensound-suspense.mp3">Suspense</option>
+<option value="https://www.bensound.com/bensound-music/bensound-relaxing.mp3">Relaxing</option>
+<option value="https://www.bensound.com/bensound-music/bensound-spy.mp3">Spy</option>
+
+            <option value="https://www.bensound.com/bensound-music/bensound-energy.mp3">Energy Boost</option>
+            <option value="https://www.bensound.com/bensound-music/bensound-relaxing.mp3">Relaxing</option>
+            <option value="https://www.bensound.com/bensound-music/bensound-zen.mp3">Zen Mode</option>
+            <option value="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3">Slow Motion</option>
+            <option value="https://www.bensound.com/bensound-music/bensound-tomorrow.mp3">Tomorrow</option>
+            
+            
+
+            </select>
+        </div>
+    </div>
+
+    <audio id="backgroundMusic" loop></audio>
+
+    <script>
+        let clockEl = document.getElementById('clock');
+        let stopwatchEl = document.getElementById('stopwatch');
+        let toggleBtn = document.getElementById('toggleBtn');
+        let backgroundMusic = document.getElementById('backgroundMusic');
+        
+        let clockInterval, stopwatchInterval;
+        let milliseconds = 0, seconds = 0, minutes = 0, hours = 0;
+        let running = false;
+
+        function updateClock() {
+            let now = new Date();
+            clockEl.innerHTML = now.toLocaleTimeString();
+        }
+
+        function toggleClock() {
+            if (clockEl.classList.contains('active')) {
+                clearInterval(clockInterval);
+                clockEl.classList.remove('active');
+                stopwatchEl.classList.add('active');
+                toggleBtn.innerText = "Switch to Clock";
+            } else {
+                clearInterval(stopwatchInterval);
+                clockEl.classList.add('active');
+                stopwatchEl.classList.remove('active');
+                clockInterval = setInterval(updateClock, 1000);
+                toggleBtn.innerText = "Switch to Stopwatch";
+            }
+        }
+
+        function startStopwatch() {
+            if (!running) {
+                running = true;
+                stopwatchInterval = setInterval(() => {
+                    milliseconds += 10;
+                    if (milliseconds === 1000) { milliseconds = 0; seconds++; }
+                    if (seconds === 60) { seconds = 0; minutes++; }
+                    if (minutes === 60) { minutes = 0; hours++; }
+                    stopwatchEl.innerHTML = 
+                        `${hours.toString().padStart(2, '0')}:` +
+                        `${minutes.toString().padStart(2, '0')}:` +
+                        `${seconds.toString().padStart(2, '0')}.` +
+                        `${milliseconds.toString().padStart(3, '0')}`;
+                }, 10);
+            }
+        }
+
+        function pauseStopwatch() {
+            running = false;
+            clearInterval(stopwatchInterval);
+        }
+
+        function resetStopwatch() {
+            running = false;
+            clearInterval(stopwatchInterval);
+            milliseconds = 0; seconds = 0; minutes = 0; hours = 0;
+            stopwatchEl.innerHTML = '00:00:00.000';
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        function playPauseMusic() {
+            if (backgroundMusic.paused) {
+                backgroundMusic.play();
+            } else {
+                backgroundMusic.pause();
+            }
+        }
+
+        function changeMusic() {
+            let selectedMusic = document.getElementById('musicSelect').value;
+            if (selectedMusic !== "none") {
+                backgroundMusic.src = selectedMusic;
+                backgroundMusic.play();
+            }
+        }
+
+        toggleClock();
+    </script>
+</body>
+</html>
